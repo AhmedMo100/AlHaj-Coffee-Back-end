@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+
 // Load .env variables
 dotenv.config();
 
@@ -49,6 +52,11 @@ app.use('/api/orders', orderRoutes);
 // User routes
 const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
+
+// Load Swagger file
+const swaggerDocument = YAML.load('./swagger.yaml');
+// Swagger Route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Start server
 const PORT = process.env.PORT || 5000;
